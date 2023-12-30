@@ -7,7 +7,7 @@ export type SortBy = { [key: string]: "asc" | "desc" } | undefined;
  */
 export type Serializable = string | number | undefined;
 
-type HeaderArgs = {
+export type HeaderArgs = {
   isSortedBy: boolean;
   sortOrder?: "asc" | "desc";
   id?: string;
@@ -94,29 +94,6 @@ export type StoreColumn = {
 export type StoreHeaderDef = {
   header: NoSerialize<() => JSXNode | Serializable | Element> | Serializable;
   id?: string;
-};
-
-/**
- * # useTable Store
- * Contains values exposed by useTable.
- */
-export type Store = {
-  table: {
-    /**
-     * An array of arrays of rows and columns.
-     */
-    rowGroups: StoreColumn[][] | undefined;
-    /**
-     * A shallow array of just header columns. No rows, as this
-     * doesn't cover the edge case of nested headers.
-     */
-    headerGroups: StoreHeaderDef[] | undefined;
-  };
-  /**
-   * A key/value pair indicating which column is being sorted.
-   * Can be updated programmatically to trigger a new sort.
-   */
-  sortedBy: SortBy;
 };
 
 export type TableData = Record<string, any>;

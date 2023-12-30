@@ -23,7 +23,7 @@ import { useTableCreator } from "./use-table-creator";
      *  <table>
           <thead>
             <tr>
-              {table.headerGroups?.map((header) => (
+              {table.headerGroups.value?.map((header) => (
                 <td key={header.id}>
                   <button data-usetable-sort={header.id} type="button">
                     {flexRender(header.header)}
@@ -33,7 +33,7 @@ import { useTableCreator } from "./use-table-creator";
             </tr>
           </thead>
           <tbody>
-            {table.rowGroups?.map((row) => (
+            {table.rowGroups.value?.map((row) => (
               <tr key={i + 'row'}>
                 {row.map((cell) => (
                   <td key={cell.id}>{cell.value}</td>

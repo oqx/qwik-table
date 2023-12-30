@@ -1,2 +1,1 @@
-export { Logo } from "./components/logo/logo";
-export { Counter } from "./components/counter/counter";
+export { useTable, flexRender, type ColumnDefs, type ColumnDef, type HeaderArgs } from "./UseTable";

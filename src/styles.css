@@ -1,0 +1,23 @@
+.chevron {
+  width: 10px;
+  height: 10px;
+  position: relative;
+  display: inline-block;
+  color: rgb(189, 189, 189);
+
+  &.chevron--down::before {
+    color: blue;
+    transform: rotate(0deg);
+  }
+
+  &.chevron--up::before {
+    color: blue;
+    transform: rotate(180deg);
+  }
+}
+
+.chevron::before {
+  content: "\25BC";
+  font-size: 10px;
+  position: absolute;
+}

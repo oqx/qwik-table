@@ -1,47 +1,165 @@
-# Qwik Library ⚡️
+- [Qwik Table ⚡️](#qwik-table-️)
+  - [Commands](#commands)
+    - [pnpm dev](#pnpm-dev)
+  - [useTable](#usetable)
+    - [Arguments](#arguments)
+      - [getColumnDefs$](#getcolumndefs)
+      - [data](#data)
+  - [Usage](#usage)
+    - [Creating Column Definitions](#creating-column-definitions)
+    - [Using useTable](#using-usetable)
+  - [Advanced Usage](#advanced-usage)
+    - [flexRender](#flexrender)
+    - [Sorting](#sorting)
 
-- [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik on GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
-- [Partytown](https://partytown.builder.io/)
-- [Mitosis](https://github.com/BuilderIO/mitosis)
-- [Builder.io](https://www.builder.io/)
 
----
+# Qwik Table ⚡️
+A headless table hook for [Qwik](https://qwik.builder.io/), inspired by [@tanstack/table](https://github.com/TanStack/table).
 
-## Project Structure
+## Commands
 
-Inside your project, you'll see the following directories and files:
+### pnpm dev
+Runs project locally.
 
+## useTable
+`useTable` generates a data representation of a table that can be iterated through to create UI.
+
+### Arguments
+#### getColumnDefs$
+
+`getColumnDefs$` is a `QRL` that returns an array of [ColumnDef](/src//UseTable//types.ts?L=20), or column definitons. `QRL` is necessary since [ColumnDef](/src//UseTable//types.ts?L=20) can contain values that cannot be serialized. `getColumnDefs$` is a building block that provides instructions on how to derive rows and columns from the `data` argument. Below is a table of `ColumnDef` properties, their corresponding types, and descriptions of each. 
+
+| Property    | Type                                                                           | Description                                                                                                                                                                |
+|-------------|--------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id          | `string`                                                                       | ID is used as a key and a mechanism for sorting. This is required if you intend to sort columns.                                                                           |
+| cell        | `( info :   unknown )  =>  JSXNode  \|  Serializable  \|  Element`             | `cell` provides an API for adding HTML/JSX to a column. The `info` argument represents the `value` of the property selected from `data` via `accessorKey` or `accessorFn`. |
+| header      | `string \| ( props :  HeaderArgs)  =>  JSXNode  \|  Serializable  \|  Element` | The table header value of the column.                                                                                                                                      |
+| accessorFn  | `( data :  TData)  =>   string   \|   number   \|   undefined`                 | An accessor function for when data cannot be retrieved from a shallow property.                                                                                            |
+| accessorKey | `keyof  TData`                                                                 | A key for accessing a shallow value from an object.                                                                                                                        |                                                                                                                                  |
+
+#### data
+`data` represents a `Signal` that is an array of objects. It is to be transformed into table headers, rows, and columns via `ColumnDef` definitions provided by `getColumnDefs$`.
+
+## Usage
+
+### Creating Column Definitions
+For this example, a table of users will be created, where a user looks like:
+```typescript
+type User = {
+    name: string;
+    email: string;
+    age: string
+}
 ```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── index.ts
+
+With `User` defined, a `getColumnDefs$` QRL would look like this:
+```typescript
+const getColumnDefs$ = $((): ColumnDef<User>[] => [
+  {
+    accessorKey: "name",
+    id: "name",
+    header: 'Name',
+  },
+  {
+    accessorKey: "email",
+    id: "email",
+    header: 'Email',
+  },
+    {
+    accessorKey: "age",
+    id: "age",
+    header: 'Age',
+  },
+])
+```
+Adding `ColumnDef` with a generic to the return type will allow validation of `accessorKey`.
+
+
+### Using useTable
+
+```tsx
+export default component$<{ users: Signal<User[]> }>(({ users }) => {
+
+    const table = useTable({ data: users, getColumnDefs$ });
+
+    return (
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        {table.headerGroups.value?.map((header) => (
+                            <td key={header.id}>{header.header}</td>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                {table.rowGroups.value?.map((row, i) => (
+                    <tr key={i + "row"}>
+                    {row.map((cell) => (
+                        <td key={cell.id}>{cell.value}</td>
+                    ))}
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        </div>
+    );
+})
 ```
 
-- `src/components`: Recommended directory for components.
+## Advanced Usage
 
-- `index.ts`: The entry point of your component library, make sure all the public components are exported from this file.
+### flexRender
+`flexRender` will determine whether the value passed in is a string or a function and return a value that can be rendered in the UI.
 
-## Development
+For example, in `ColumnDef`, instead of adding a `string` to the `header` property, it can instead be a function that returns a JSXNode or element.
 
-Development mode uses [Vite's development server](https://vitejs.dev/). For Qwik during development, the `dev` command will also server-side render (SSR) the output. The client-side development modules are loaded by the browser.
+```tsx
+const SortHeader = ({
+  isSortedBy,
+  sortOrder,
+  heading,
+  id,
+}: {
+  isSortedBy: boolean;
+  sortOrder?: "asc" | "desc";
+  heading: string;
+  id?: string;
+}) => (
+    // Adding data-usetable-sort to an element will automatically
+    // add onClick sort functionality.
+  <button data-usetable-sort={id}>
+    {heading}{" "}
+    <span
+      class={{
+        chevron: true,
+        "chevron--down": isSortedBy && sortOrder === "desc",
+        "chevron--up": isSortedBy && sortOrder === "asc",
+      }}
+    />
+  </button>
+);
 
+const getColumnDefs$ = $((): ColumnDef<User>[] => [
+  {
+    accessorKey: "name",
+    id: "name",
+    header: (props) => SortHeader({...props, heading: "Name" }),
+  },
+  // ...
+])
 ```
-pnpm dev
+
+### Sorting
+Sorting can be achieved by adding `data-usetable-sort` to an element -- particularly an element assigned to `ColumnDef.header` (see the SortHeader example above). A JSXNode assigned to `ColumnDef.header` will receive the following props:
+```ts
+type HeaderArgs = {
+  // true if the column is currently the one the table is sorted by
+  isSortedBy: boolean;
+  // current sort order
+  sortOrder?: "asc" | "desc";
+  // id of the column being sorted
+  id?: string;
+};
 ```
 
-> Note: during dev mode, Vite will request many JS files, which does not represent a Qwik production build.
-
-## Production
-
-The production build should generate the production build of your component library in (./lib) and the typescript type definitions in (./lib-types).
-
-```
-pnpm build
-```

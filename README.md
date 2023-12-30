@@ -27,7 +27,7 @@ Runs project locally.
 ### Arguments
 #### getColumnDefs$
 
-`getColumnDefs$` is a `QRL` that returns an array of [ColumnDef](/src//UseTable//types.ts?L=20), or column definitons. `QRL` is necessary since [ColumnDef](/src//UseTable//types.ts?L=20) can contain values that cannot be serialized. `getColumnDefs$` is a building block that provides instructions on how to derive rows and columns from the `data` argument. Below is a table of `ColumnDef` properties, their corresponding types, and descriptions of each. 
+`getColumnDefs$` is a `QRL` that returns an array of [ColumnDef](/src//UseTable//types.ts#L=20), or column definitons. `QRL` is necessary since [ColumnDef](/src//UseTable//types.ts#L=20) can contain values that cannot be serialized. `getColumnDefs$` is a building block that provides instructions on how to derive rows and columns from the `data` argument. Below is a table of `ColumnDef` properties, their corresponding types, and descriptions of each. 
 
 | Property    | Type                                                                           | Description                                                                                                                                                                |
 |-------------|--------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

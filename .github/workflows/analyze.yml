@@ -1,5 +1,9 @@
 on:
     pull_request:
+      paths: 
+        - "src/**"
+        - ".github/workflows/analyze.yml"
+        - "pnpm-lock.yaml"
       branches:
         - main
 
@@ -19,7 +23,7 @@ jobs:
               with:
                 version: 8
                 run_install: false
-                
+
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3
               with:

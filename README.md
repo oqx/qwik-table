@@ -1,25 +1,18 @@
-# Qwik Table ⚡️
+# Qwik Table ⚡️ [![codecov](https://codecov.io/gh/oqx/qwik-table/graph/badge.svg?token=12R5UICUAC)](https://codecov.io/gh/oqx/qwik-table) ![build](https://github.com/oqx/qwik-table/actions/workflows/release.yml/badge.svg)
 A headless table hook for [Qwik](https://qwik.builder.io/), inspired by [@tanstack/table](https://github.com/TanStack/table).
 
-- [Qwik Table ⚡️](#qwik-table-️)
-  - [Commands](#commands)
-    - [pnpm dev](#pnpm-dev)
-  - [useTable](#usetable)
-    - [Arguments](#arguments)
-      - [getColumnDefs$](#getcolumndefs)
-      - [data](#data)
-  - [Usage](#usage)
-    - [Creating Column Definitions](#creating-column-definitions)
-    - [Using useTable](#using-usetable)
-  - [Advanced Usage](#advanced-usage)
-    - [flexRender](#flexrender)
-    - [Sorting](#sorting)
 
+- [useTable](#usetable)
+  - [Arguments](#arguments)
+    - [getColumnDefs$](#getcolumndefs)
+    - [data](#data)
+- [Usage](#usage)
+  - [Creating Column Definitions](#creating-column-definitions)
+  - [Using useTable](#using-usetable)
+- [Advanced Usage](#advanced-usage)
+  - [flexRender](#flexrender)
+  - [Sorting](#sorting)
 
-## Commands
-
-### pnpm dev
-Runs project locally.
 
 ## useTable
 `useTable` generates a data representation of a table that can be iterated through to create UI.

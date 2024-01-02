@@ -39,7 +39,6 @@
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\"",
-    "release": "np",
     "start": "vite --open --mode ssr",
     "test": "vitest run",
     "qwik": "qwik",

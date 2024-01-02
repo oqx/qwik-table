@@ -1,6 +1,6 @@
 {
   "name": "@oqx/qwik-table",
-  "version": "1.1.0",
+  "version": "0.0.1",
   "description": "A headless Qwik table component inspired by @tanstack/table.",
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",

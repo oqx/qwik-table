@@ -1,4 +1,5 @@
-import Example from "./example";
+import SimpleTable from "./examples/simple-table";
+import SortableColumns from "./examples/sortable-columns";
 
 export default () => {
   return (
@@ -8,7 +9,10 @@ export default () => {
         <title>Qwik Blank App</title>
       </head>
       <body>
-        <Example />
+        <h1>Simple Table</h1>
+        <SimpleTable />
+        <h1>Sortable Columns</h1>
+        <SortableColumns />
       </body>
     </>
   );

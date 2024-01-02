@@ -15,7 +15,7 @@ export type HeaderArgs = {
 
 type HeaderFn = (props: HeaderArgs) => JSXNode | Serializable | Element;
 
-type CellFn = (info: unknown) => JSXNode | Serializable | Element;
+type CellFn<T> = (info: T) => JSXNode | Serializable | Element;
 
 export type ColumnDef<TData extends TableData> =
   | {
@@ -24,7 +24,7 @@ export type ColumnDef<TData extends TableData> =
        * is required if you intend to sort columns.
        */
       id?: string;
-      cell?: CellFn;
+      cell?: CellFn<{ value: TData[keyof TData] | undefined }>;
       /**
        * The header of this column.
        */
@@ -42,7 +42,7 @@ export type ColumnDef<TData extends TableData> =
     }
   | {
       id?: string;
-      cell?: CellFn;
+      cell?: CellFn<unknown>;
       header?: string | HeaderFn;
       accessorFn?: (data: TData) => string | number | undefined;
       accessorKey?: never;
@@ -92,7 +92,7 @@ export type StoreColumn = {
  * for them to be safely placed in store.
  */
 export type StoreHeaderDef = {
-  header: NoSerialize<() => JSXNode | Serializable | Element> | Serializable;
+  cell: NoSerialize<() => JSXNode | Serializable | Element> | Serializable;
   id?: string;
 };
 

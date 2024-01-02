@@ -1,0 +1,32 @@
+export const data = [
+  {
+    id: "ford",
+    displayName: "Alex's Car",
+    make: "Ford",
+    model: "Taurus",
+    year: "2001",
+    color: "Teal",
+    licensePlate: "HAIBBY",
+    vin: "ZCJ5K2S57YQ23CCG50",
+  },
+  {
+    id: "chevrolet",
+    displayName: "Brian's Car",
+    make: "Chevrolet",
+    model: "Cavelier",
+    year: "1998",
+    color: "Red",
+    licensePlate: "651WTK",
+    vin: "HCJ5K2S57YQ23CCG50",
+  },
+  {
+    id: "lexus",
+    displayName: "Chris' Car",
+    make: "Lexus",
+    model: "CT-200h",
+    year: "2014",
+    color: 12,
+    licensePlate: "BCKNTIME",
+    vin: "YTJ5K2S57YQ23CCG50",
+  },
+];

@@ -26,5 +26,18 @@ export default defineConfig(() => {
       },
     },
     plugins: [qwikVite(), tsconfigPaths()],
+    test: {
+      coverage: {
+        provider: 'istanbul',
+        exclude: [
+          '**/node_modules/**',
+          '**/dist/**',
+          '**/entry.dev.tsx',
+          '**/entry.ssr.tsx',
+          '**/.{idea,git,cache,output,temp}/**',
+          './src/config/**',
+        ],
+      },
+    },
   };
 });

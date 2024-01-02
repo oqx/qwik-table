@@ -9,7 +9,14 @@ export const flexRender = (
     | NoSerialize<() => JSXNode | Element | Serializable>,
 ): JSXChildren | string => {
   if (typeof arg === "function" || typeof arg === "object") {
-    return (() => arg())() as JSXChildren;
+    try {
+      return (() => arg())() as JSXChildren;
+    } catch (cause) {
+      throw new Error(
+        "Qwik Table -> flexRender: arg could not be executed as a function.",
+        { cause },
+      );
+    }
   }
   return arg;
 };

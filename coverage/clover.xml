@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1704169734223" clover="3.2.0">
+  <project timestamp="1704169734223" name="All files">
+    <metrics statements="138" coveredstatements="97" conditionals="90" coveredconditionals="55" methods="40" coveredmethods="21" elements="268" coveredelements="173" complexity="0" loc="138" ncloc="138" packages="4" files="10" classes="10"/>
+    <package name="qwik-table">
+      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name=".eslintrc.cjs" path="/Users/jaykariesch/projects/qwik-table/.eslintrc.cjs">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="qwik-table.src">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="root.tsx" path="/Users/jaykariesch/projects/qwik-table/src/root.tsx">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="qwik-table.src.UseTable">
+      <metrics statements="117" coveredstatements="90" conditionals="83" coveredconditionals="55" methods="27" coveredmethods="18"/>
+      <file name="flex-render.ts" path="/Users/jaykariesch/projects/qwik-table/src/UseTable/flex-render.ts">
+        <metrics statements="6" coveredstatements="6" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="11" count="71" type="cond" truecount="4" falsecount="0"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="21" count="67" type="stmt"/>
+      </file>
+      <file name="use-sort.ts" path="/Users/jaykariesch/projects/qwik-table/src/UseTable/use-sort.ts">
+        <metrics statements="15" coveredstatements="5" conditionals="10" coveredconditionals="2" methods="4" coveredmethods="2"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="31" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="35" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="37" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="52" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+      </file>
+      <file name="use-table-creator.ts" path="/Users/jaykariesch/projects/qwik-table/src/UseTable/use-table-creator.ts">
+        <metrics statements="16" coveredstatements="15" conditionals="8" coveredconditionals="6" methods="2" coveredmethods="2"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="37" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="43" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="51" count="6" type="stmt"/>
+        <line num="52" count="24" type="stmt"/>
+        <line num="59" count="24" type="cond" truecount="2" falsecount="0"/>
+        <line num="60" count="6" type="stmt"/>
+        <line num="62" count="24" type="stmt"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+      </file>
+      <file name="use-table.ts" path="/Users/jaykariesch/projects/qwik-table/src/UseTable/use-table.ts">
+        <metrics statements="12" coveredstatements="12" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="2"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="55" count="6" type="stmt"/>
+        <line num="63" count="6" type="stmt"/>
+        <line num="69" count="6" type="stmt"/>
+        <line num="74" count="6" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="79" count="2" type="stmt"/>
+        <line num="88" count="2" type="stmt"/>
+        <line num="90" count="2" type="stmt"/>
+        <line num="96" count="6" type="stmt"/>
+        <line num="110" count="6" type="stmt"/>
+        <line num="112" count="6" type="stmt"/>
+      </file>
+      <file name="utils.ts" path="/Users/jaykariesch/projects/qwik-table/src/UseTable/utils.ts">
+        <metrics statements="68" coveredstatements="52" conditionals="60" coveredconditionals="42" methods="17" coveredmethods="10"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="19" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="43" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="55" count="2" type="stmt"/>
+        <line num="56" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="57" count="2" type="stmt"/>
+        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="68" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="74" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="85" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="95" count="4" type="stmt"/>
+        <line num="97" count="4" type="stmt"/>
+        <line num="98" count="12" type="stmt"/>
+        <line num="100" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="101" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="105" count="2" type="stmt"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
+        <line num="115" count="2" type="stmt"/>
+        <line num="118" count="10" type="cond" truecount="1" falsecount="1"/>
+        <line num="119" count="10" type="stmt"/>
+        <line num="121" count="10" type="stmt"/>
+        <line num="124" count="4" type="stmt"/>
+        <line num="127" count="2" type="stmt"/>
+        <line num="131" count="61" type="cond" truecount="1" falsecount="1"/>
+        <line num="133" count="61" type="cond" truecount="3" falsecount="1"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="139" count="61" type="cond" truecount="4" falsecount="0"/>
+        <line num="140" count="58" type="stmt"/>
+        <line num="141" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="142" count="1" type="stmt"/>
+        <line num="149" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="150" count="1" type="stmt"/>
+        <line num="153" count="1" type="stmt"/>
+        <line num="158" count="2" type="stmt"/>
+        <line num="162" count="30" type="stmt"/>
+        <line num="164" count="30" type="stmt"/>
+        <line num="166" count="30" type="cond" truecount="2" falsecount="0"/>
+        <line num="167" count="5" type="stmt"/>
+        <line num="170" count="25" type="stmt"/>
+        <line num="173" count="2" type="stmt"/>
+        <line num="174" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="176" count="2" type="stmt"/>
+        <line num="182" count="27" type="stmt"/>
+        <line num="184" count="27" type="cond" truecount="4" falsecount="0"/>
+        <line num="186" count="27" type="stmt"/>
+        <line num="188" count="27" type="stmt"/>
+      </file>
+    </package>
+    <package name="qwik-table.src.examples">
+      <metrics statements="20" coveredstatements="7" conditionals="7" coveredconditionals="0" methods="12" coveredmethods="3"/>
+      <file name="data.ts" path="/Users/jaykariesch/projects/qwik-table/src/examples/data.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+      <file name="simple-table.tsx" path="/Users/jaykariesch/projects/qwik-table/src/examples/simple-table.tsx">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="6" type="stmt"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="53" count="48" type="stmt"/>
+      </file>
+      <file name="sortable-columns.tsx" path="/Users/jaykariesch/projects/qwik-table/src/examples/sortable-columns.tsx">
+        <metrics statements="13" coveredstatements="0" conditionals="7" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

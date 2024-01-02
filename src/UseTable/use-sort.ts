@@ -34,9 +34,9 @@ export const useSort = <TData extends TableData>({
 
     if (!sortBy.value) return;
 
-    const [[columnDefId, order]] = isObject(sortBy.value)
-      ? Object.entries(sortBy.value)
-      : [[undefined, undefined]];
+    const [columnDefId, order] = isObject(sortBy.value)
+      ? Object.entries(sortBy.value).flat()
+      : [undefined, undefined];
 
     if (!columnDefId) return;
 

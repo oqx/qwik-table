@@ -8,7 +8,13 @@ import type {
   StoreColumn,
 } from "./types";
 import { Signal, noSerialize } from "@builder.io/qwik";
+import isObject from "lodash.isobject";
 
+/**
+ * Converts values to a string or lowercases strings.
+ *
+ * @param value
+ */
 export const normalizeSortValue = (value: string | number | undefined) => {
   if (!value) return "";
   if (isString(value)) return value.toLowerCase();
@@ -19,6 +25,15 @@ export const normalizeSortValue = (value: string | number | undefined) => {
   );
 };
 
+/**
+ * @summary Creates a {@link SortBy} object, which determines which
+ * column the table is sorted by, and also whether ascending or descending
+ * order.
+ *
+ * @param sortBy Existing {@link SortBy} object, or undefined.
+ *
+ * @param columnDefId ID of the column that determines sort order.
+ */
 export const sortHelper = (sortBy: SortBy, columnDefId: string): SortBy => {
   if (!sortBy) {
     return {
@@ -38,6 +53,9 @@ export const sortHelper = (sortBy: SortBy, columnDefId: string): SortBy => {
 };
 
 export const applySortListeners = (sortedBy: Signal<SortBy | undefined>) => {
+  if(typeof window === 'undefined') {
+    return () => null
+  }
   if (!sortedBy) {
     console.warn(
       "useTable -> applySortListeners: sortBy key/value pair undefined.",
@@ -77,28 +95,28 @@ export const deriveHeaders = <TData extends TableData>(
   const cols = [];
 
   for (const col of columns) {
-    const _header = col.header;
+    const header = col.header;
 
-    if (typeof _header === "function") {
+    if (typeof header === "function") {
       const [[key, order]] = sortedBy
         ? Object.entries(sortedBy ?? {})
         : [[undefined, undefined]];
 
-      const header = noSerialize(() =>
-        _header({
+      const cell = noSerialize(() =>
+        header({
           isSortedBy: key === col.id,
           sortOrder: order,
           id: col.id,
         }),
       );
 
-      cols.push({ header, id: col.id });
+      cols.push({ cell, id: col.id });
 
       continue;
     }
 
-    if (typeof _header !== "undefined") {
-      cols.push({ header: _header, id: col.id });
+    if (typeof header !== "undefined") {
+      cols.push({ cell: header, id: col.id });
 
       continue;
     }
@@ -109,18 +127,32 @@ export const deriveHeaders = <TData extends TableData>(
 export const getValueFromColumnDef = <TData extends TableData>(
   column: ColumnDef<TData> | undefined,
   state: TData,
-) => {
+): TData[keyof TData] | undefined => {
   if (!column) return;
 
-  if (column.accessorKey) {
+  if (!state || !isObject(state)) {
+    throw new TypeError(
+      `getValueFromColumnDef: Expected a "data" state object, instead received ${typeof state}.`,
+    );
+  }
+
+  if (column.accessorKey && column.accessorKey in state) {
     return state[column.accessorKey];
+  } else if (column.accessorKey && !(column.accessorKey in state)) {
+    throw new Error(
+      `accessorKey "${String(
+        column.accessorKey,
+      )}" does not exist in "data" state.`,
+    );
   }
 
   if (typeof column.accessorFn === "function") {
-    return column.accessorFn(state);
+    return column.accessorFn(state) as any;
   }
 
-  throw new Error("accessorKey does not exist in state.");
+  throw new Error(
+    "Could not retrieve value from ColumnDef. This could be due to a ColumnDef missing an accessorKey or accessorFn property.",
+  );
 };
 
 export const getCellValue = <TData extends TableData>(
@@ -129,18 +161,17 @@ export const getCellValue = <TData extends TableData>(
 ) => {
   const cell = col?.cell;
 
-  if (!cell) {
-    return;
-  }
+  const value = getValueFromColumnDef(col, state);
 
   if (typeof cell === "function") {
-    const value = getValueFromColumnDef(col, state);
-
     return noSerialize(() => cell({ value }));
   }
 
-  return cell;
+  return value;
 };
+
+const createIdFromString = (str: string | undefined) =>
+  str ? str.replace(/\W/g, "_").toLowerCase() : undefined;
 
 export const deriveColumnsFromColumnDefs = <TData extends TableData>(
   col: ColumnDef<TData>,
@@ -150,13 +181,13 @@ export const deriveColumnsFromColumnDefs = <TData extends TableData>(
 ): StoreColumn => {
   const value = getValueFromColumnDef(col, state);
 
-  const id = col.id ?? `${prefixId}-${value ?? fallback}`;
+  const id = col.id ?? `${prefixId}-${createIdFromString(value) ?? fallback}`;
 
   const cell = getCellValue(col, state);
 
   return {
     value: value ?? fallback,
     id,
-    cell,
+    cell: cell ?? fallback,
   };
 };

@@ -56,8 +56,8 @@ export const useTable = <TData extends TableData>({
 
   /**
    * Stores the ID of the column by which the table
-   * is sorted, along with the sort order. 
-   * 
+   * is sorted, along with the sort order.
+   *
    * See the value here: {@link SortBy}
    */
   const sortBy = useSignal<SortBy>();
@@ -68,7 +68,7 @@ export const useTable = <TData extends TableData>({
    */
   const rowGroups = useSignal<StoreColumn[][]>();
 
-    /**
+  /**
    * Array of table header ({@link StoreHeaderDef}) columns.
    */
   const headerGroups = useSignal<StoreHeaderDef[]>();
@@ -107,7 +107,7 @@ export const useTable = <TData extends TableData>({
    * Sorts internalState when sortBy signal changes, which
    * then triggers the table to be recreated.
    */
-  useSort({sortBy, internalState, data, getColumnDefs$});
+  useSort({ sortBy, internalState, data, getColumnDefs$ });
 
   return { rowGroups, headerGroups, sortBy };
 };

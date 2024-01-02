@@ -1,13 +1,14 @@
 import { createDOM } from "@builder.io/qwik/testing";
 import { test, expect } from "vitest";
 import SimpleTable from "../examples/simple-table";
-import { data } from "../examples/data";
+import { mockData, columnDefs } from "../examples/simple-table";
 
 test(`[SimpleTable Component]: Should contain table head cells in correct order`, async () => {
   const { screen, render } = await createDOM();
+
   await render(<SimpleTable />);
 
-  const theads = ["Name", "Make", "Model", "Year"];
+  const theads = columnDefs.map((def) => def.header as string);
 
   const nodes = screen.querySelectorAll(
     "thead tr td",
@@ -28,8 +29,8 @@ test(`[SimpleTable Component]: Should contain table cells in correct order`, asy
 
   let nodeCount = 0;
 
-  for (let i = 0; i < data.length; i++) {
-    const values = Object.values(data[i]).slice(1, -3);
+  for (let i = 0; i < mockData.length; i++) {
+    const values = Object.values(mockData[i]).slice(1, -3);
 
     for (let j = 0; j < values.length; j++) {
       expect(nodes[nodeCount].textContent).toBe(values[j]);

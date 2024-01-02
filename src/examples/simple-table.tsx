@@ -3,61 +3,65 @@ import { ColumnDefs } from "../UseTable";
 import { flexRender, useTable } from "../UseTable";
 import styles from "../styles.css?inline";
 
+/**
+ * For tests.
+ */
+export const columnDefs = [
+  {
+    accessorKey: "firstName",
+    id: "firstName",
+    header: "First name",
+  },
+  {
+    accessorKey: "lastName",
+    id: "lastName",
+    header: "Last name",
+  },
+  {
+    accessorKey: "phone",
+    id: "phone",
+    header: "Phone",
+  },
+];
+
 export const getColumnDefs$ = $(
   (): ColumnDefs<(typeof mockData)[0]> => [
     {
-      accessorKey: "displayName",
-      id: "displayName",
-      header: "Name",
+      accessorKey: "firstName",
+      id: "firstName",
+      header: "First name",
     },
     {
-      accessorKey: "make",
-      id: "make",
-      header: "Make",
+      accessorKey: "lastName",
+      id: "lastName",
+      header: "Last name",
     },
     {
-      accessorKey: "model",
-      id: "model",
-      header: "Model",
-    },
-    {
-      accessorKey: "year",
-      id: "year",
-      header: "Year",
+      accessorKey: "phone",
+      id: "phone",
+      header: "Phone",
     },
   ],
 );
 
-const mockData = [
+export const mockData = [
   {
-    id: "ford",
-    displayName: "Alex's Car",
-    make: "Ford",
-    model: "Taurus",
-    year: "2001",
-    color: "Teal",
-    licensePlate: "HAIBBY",
-    vin: "ZCJ5K2S57YQ23CCG50",
+    id: "1234",
+    firstName: "Reggie",
+    lastName: "Watts",
+    phone: "555-555-5555",
   },
   {
-    id: "chevrolet",
-    displayName: "Brian's Car",
-    make: "Chevrolet",
-    model: "Cavelier",
-    year: "1998",
-    color: "Red",
-    licensePlate: "651WTK",
-    vin: "HCJ5K2S57YQ23CCG50",
+    id: "2345",
+    firstName: "Wendy",
+    lastName: "Watts",
+    phone: "551-555-5555",
   },
   {
-    id: "lexus",
-    displayName: "Chris' Car",
-    make: "Lexus",
-    model: "CT-200h",
-    year: "2014",
-    color: 12,
-    licensePlate: "BCKNTIME",
-    vin: "YTJ5K2S57YQ23CCG50",
+    id: "4321",
+    firstName: "Kurt",
+    lastName: "Jones",
+    phone: "555-255-6555",
   },
 ];
 

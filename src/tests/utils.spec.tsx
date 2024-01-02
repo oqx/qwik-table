@@ -7,10 +7,10 @@ import {
   getValueFromColumnDef,
   getCellValue,
   deriveColumnsFromColumnDefs,
-} from "./utils";
+} from "../UseTable/utils";
 import { component$ } from "@builder.io/qwik";
-import { flexRender } from "./flex-render";
-import { ColumnDef } from "./types";
+import { flexRender } from "../UseTable/flex-render";
+import { ColumnDef } from "../UseTable/types";
 
 describe("normalizeSortValue test", () => {
   it("should return a string when a number is passed in", () => {

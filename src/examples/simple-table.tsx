@@ -4,29 +4,29 @@ import { flexRender, useTable } from "../UseTable";
 import styles from "../styles.css?inline";
 
 export const getColumnDefs$ = $(
-    (): ColumnDefs<(typeof mockData)[0]> => [
-      {
-        accessorKey: "displayName",
-        id: "displayName",
-        header: "Name",
-      },
-      {
-        accessorKey: "make",
-        id: "make",
-        header: "Make",
-      },
-      {
-        accessorKey: "model",
-        id: "model",
-        header: "Model"
-      },
-      {
-        accessorKey: "year",
-        id: "year",
-        header: "Year",
-      }
-    ],
-  );
+  (): ColumnDefs<(typeof mockData)[0]> => [
+    {
+      accessorKey: "displayName",
+      id: "displayName",
+      header: "Name",
+    },
+    {
+      accessorKey: "make",
+      id: "make",
+      header: "Make",
+    },
+    {
+      accessorKey: "model",
+      id: "model",
+      header: "Model",
+    },
+    {
+      accessorKey: "year",
+      id: "year",
+      header: "Year",
+    },
+  ],
+);
 
 const mockData = [
   {
@@ -83,9 +83,7 @@ export default component$(() => {
             <tr key={i + "row"}>
               {row.map((cell) => (
                 <td key={cell.id}>
-                  <div data-test-id={cell.value}>
-                    {flexRender(cell.cell)}
-                  </div>
+                  <div data-test-id={cell.value}>{flexRender(cell.cell)}</div>
                 </td>
               ))}
             </tr>

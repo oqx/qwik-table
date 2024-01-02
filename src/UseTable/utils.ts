@@ -53,8 +53,8 @@ export const sortHelper = (sortBy: SortBy, columnDefId: string): SortBy => {
 };
 
 export const applySortListeners = (sortedBy: Signal<SortBy | undefined>) => {
-  if(typeof window === 'undefined') {
-    return () => null
+  if (typeof window === "undefined") {
+    return () => null;
   }
   if (!sortedBy) {
     console.warn(

@@ -6,9 +6,9 @@ import isObject from "lodash.isobject";
 import { data as mockData } from "./data";
 
 /**
- * @summary Adding a data-usetable-sort attribute to a clickable table head 
+ * @summary Adding a data-usetable-sort attribute to a clickable table head
  * button will expose the column to the built-in sort function.
- * 
+ *
  * You can find a use case in the {@link SortHeader} component below.
  */
 
@@ -33,9 +33,7 @@ export default component$(() => {
           {table.rowGroups.value?.map((row, i) => (
             <tr key={i + "row"}>
               {row.map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.cell)}
-                </td>
+                <td key={cell.id}>{flexRender(cell.cell)}</td>
               ))}
             </tr>
           ))}

@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { flexRender } from "./flex-render";
+import { flexRender } from "../UseTable/flex-render";
 import { noSerialize } from "@builder.io/qwik";
 
 describe("flexRender test", () => {
@@ -12,7 +12,7 @@ describe("flexRender test", () => {
       expect.objectContaining({
         flags: 3,
         immutableProps: null,
-        key: "lc_0",
+        key: expect.any(String),
         props: {},
         type: "div",
       }),

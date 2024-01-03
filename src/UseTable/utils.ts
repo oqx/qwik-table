@@ -52,6 +52,14 @@ export const sortHelper = (sortBy: SortBy, columnDefId: string): SortBy => {
   };
 };
 
+/**
+ * @summary Applies event listeners that change the SortBy value
+ * on click.
+ *
+ * @param sortedBy
+ *
+ * @returns
+ */
 export const applySortListeners = (sortedBy: Signal<SortBy | undefined>) => {
   if (typeof window === "undefined") {
     return () => null;

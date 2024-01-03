@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/oqx/qwik-table/compare/v0.1.1...v0.2.0) (2024-01-03)
+
+
+### Features
+
+* **sortByChar:** adds sort by date str and date obj ([#26](https://github.com/oqx/qwik-table/issues/26)) ([94f1aff](https://github.com/oqx/qwik-table/commit/94f1affe74f7885339f3222f277288257683e16c))
+
 ## [0.1.1](https://github.com/oqx/qwik-table/compare/v0.1.0...v0.1.1) (2024-01-03)
 
 ### Features

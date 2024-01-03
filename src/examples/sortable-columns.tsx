@@ -33,7 +33,9 @@ export default component$(() => {
           {table.rowGroups.value?.map((row, i) => (
             <tr key={i + "row"}>
               {row.map((cell) => (
-                <td key={cell.id}>{flexRender(cell.cell)}</td>
+                <td key={cell.id} data-test-id={cell.value}>
+                  {flexRender(cell.cell)}
+                </td>
               ))}
             </tr>
           ))}

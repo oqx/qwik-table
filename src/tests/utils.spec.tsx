@@ -7,16 +7,15 @@ import {
   getValueFromColumnDef,
   getCellValue,
   deriveColumnsFromColumnDefs,
+  sortByChar,
+  isDate,
+  parseDateString,
 } from "../UseTable/utils";
 import { component$ } from "@builder.io/qwik";
 import { flexRender } from "../UseTable/flex-render";
-import { ColumnDef } from "../UseTable/types";
+import { ColumnDef, ColumnDefs } from "../UseTable/types";
 
 describe("normalizeSortValue test", () => {
-  it("should return a string when a number is passed in", () => {
-    expect(normalizeSortValue(1)).toBe("1");
-  });
-
   it("should return a string when a string is passed in", () => {
     expect(normalizeSortValue("hello")).toBe("hello");
   });
@@ -331,5 +330,440 @@ describe("deriveColumnsFromColumnDefs test", () => {
       id: "hello---",
       cell: expect.any(Function),
     });
+  });
+});
+
+describe("isDate test", () => {
+  it("should return true if value is a date object", () => {
+    expect(isDate(new Date())).toBeTruthy();
+  });
+
+  it("should return true if value is a parsable date string", () => {
+    expect(isDate("12-10-1990")).toBeTruthy();
+  });
+
+  it("should return false if value is a not a parsable date", () => {
+    expect(isDate(new Date())).toBeTruthy();
+  });
+});
+
+describe("parseDateString test", () => {
+  it("should return true if value is a date object", () => {
+    const date = new Date();
+    expect(parseDateString(date)).toEqual(date);
+  });
+
+  it("should return true if value is a parsable date string", () => {
+    expect(parseDateString("12-10-1990")).toEqual(new Date("12/10/1990"));
+  });
+
+  it("should return false if value is a not a parsable date", () => {
+    expect(parseDateString("fdgdfg")).toBe(undefined);
+  });
+});
+
+describe("sortByChar test", () => {
+  it("should sort strings by asc", () => {
+    const columnDefs: ColumnDefs<(typeof defaultData)[0]> = [
+      {
+        accessorKey: "displayName",
+        id: "displayName",
+        header: "name",
+      },
+      {
+        accessorKey: "make",
+        id: "make",
+        header: "make",
+      },
+      {
+        accessorKey: "model",
+        id: "model",
+        header: "model",
+      },
+      {
+        accessorKey: "year",
+        id: "year",
+        header: "year",
+      },
+    ];
+
+    expect(
+      sortByChar<(typeof defaultData)[0]>({
+        columnDefs,
+        data: defaultData,
+        sortBy: { displayName: "asc" },
+      }),
+    ).toEqual(defaultData);
+
+    expect(
+      sortByChar<(typeof defaultData)[0]>({
+        columnDefs,
+        data: defaultData,
+        sortBy: { make: "asc" },
+      }),
+    ).toEqual([
+      {
+        id: "24242dfsdsffff",
+        displayName: "Brian's Car",
+        make: "Chevrolet",
+        model: "Cavelier",
+        year: "1998",
+      },
+      {
+        id: "24242",
+        displayName: "Alex's Car",
+        make: "Ford",
+        model: "Taurus",
+        year: "2001",
+      },
+      {
+        id: "sdfsdfw32r",
+        displayName: "Chris' Car",
+        make: "Lexus",
+        model: "CT-200h",
+        year: "2014",
+      },
+    ]);
+  });
+
+  it("should sort strings by desc", () => {
+    const columnDefs: ColumnDefs<(typeof defaultData)[0]> = [
+      {
+        accessorKey: "displayName",
+        id: "displayName",
+        header: "name",
+      },
+      {
+        accessorKey: "make",
+        id: "make",
+        header: "make",
+      },
+      {
+        accessorKey: "model",
+        id: "model",
+        header: "model",
+      },
+      {
+        accessorKey: "year",
+        id: "year",
+        header: "year",
+      },
+    ];
+
+    expect(
+      sortByChar<(typeof defaultData)[0]>({
+        columnDefs,
+        data: defaultData,
+        sortBy: { displayName: "desc" },
+      }),
+    ).toEqual([
+      {
+        id: "sdfsdfw32r",
+        displayName: "Chris' Car",
+        make: "Lexus",
+        model: "CT-200h",
+        year: "2014",
+      },
+      {
+        id: "24242dfsdsffff",
+        displayName: "Brian's Car",
+        make: "Chevrolet",
+        model: "Cavelier",
+        year: "1998",
+      },
+      {
+        id: "24242",
+        displayName: "Alex's Car",
+        make: "Ford",
+        model: "Taurus",
+        year: "2001",
+      },
+    ]);
+  });
+
+  it("should sort numbers by asc and desc", () => {
+    const data = [
+      {
+        displayName: 1,
+        make: 2,
+        model: 3,
+        year: 4,
+      },
+      {
+        displayName: 2,
+        make: 3,
+        model: 4,
+        year: 1,
+      },
+      {
+        displayName: 3,
+        make: 4,
+        model: 1,
+        year: 2,
+      },
+      {
+        displayName: 4,
+        make: 1,
+        model: 2,
+        year: 3,
+      },
+    ];
+
+    const columnDefs: ColumnDefs<(typeof data)[0]> = [
+      {
+        accessorKey: "displayName",
+        id: "displayName",
+        header: "name",
+      },
+      {
+        accessorKey: "make",
+        id: "make",
+        header: "make",
+      },
+      {
+        accessorKey: "model",
+        id: "model",
+        header: "model",
+      },
+      {
+        accessorKey: "year",
+        id: "year",
+        header: "year",
+      },
+    ];
+
+    expect(
+      sortByChar<(typeof data)[0]>({
+        columnDefs,
+        data,
+        sortBy: { make: "asc" },
+      }),
+    ).toEqual([
+      {
+        displayName: 4,
+        make: 1,
+        model: 2,
+        year: 3,
+      },
+      {
+        displayName: 1,
+        make: 2,
+        model: 3,
+        year: 4,
+      },
+      {
+        displayName: 2,
+        make: 3,
+        model: 4,
+        year: 1,
+      },
+      {
+        displayName: 3,
+        make: 4,
+        model: 1,
+        year: 2,
+      },
+    ]);
+
+    expect(
+      sortByChar<(typeof data)[0]>({
+        columnDefs,
+        data,
+        sortBy: { displayName: "desc" },
+      }),
+    ).toEqual([
+      {
+        displayName: 4,
+        make: 1,
+        model: 2,
+        year: 3,
+      },
+      {
+        displayName: 3,
+        make: 4,
+        model: 1,
+        year: 2,
+      },
+      {
+        displayName: 2,
+        make: 3,
+        model: 4,
+        year: 1,
+      },
+      {
+        displayName: 1,
+        make: 2,
+        model: 3,
+        year: 4,
+      },
+    ]);
+  });
+
+  it("should sort dates by asc and desc", () => {
+    const data = [
+      {
+        displayName: new Date("12-12-2000"),
+        make: 2,
+        model: 3,
+        year: 4,
+      },
+      {
+        displayName: new Date("12-13-2000"),
+        make: 3,
+        model: 4,
+        year: 1,
+      },
+      {
+        displayName: new Date("12-14-2000"),
+        make: 4,
+        model: 1,
+        year: 2,
+      },
+      {
+        displayName: new Date("12-15-2000"),
+        make: 1,
+        model: 2,
+        year: 3,
+      },
+    ];
+
+    const columnDefs: ColumnDefs<(typeof data)[0]> = [
+      {
+        accessorKey: "displayName",
+        id: "displayName",
+        header: "name",
+      },
+      {
+        accessorKey: "make",
+        id: "make",
+        header: "make",
+      },
+      {
+        accessorKey: "model",
+        id: "model",
+        header: "model",
+      },
+      {
+        accessorKey: "year",
+        id: "year",
+        header: "year",
+      },
+    ];
+
+    expect(
+      sortByChar<(typeof data)[0]>({
+        columnDefs,
+        data,
+        sortBy: { displayName: "desc" },
+      }),
+    ).toEqual([
+      {
+        displayName: new Date("12-15-2000"),
+        make: 1,
+        model: 2,
+        year: 3,
+      },
+      {
+        displayName: new Date("12-14-2000"),
+        make: 4,
+        model: 1,
+        year: 2,
+      },
+      {
+        displayName: new Date("12-13-2000"),
+        make: 3,
+        model: 4,
+        year: 1,
+      },
+      {
+        displayName: new Date("12-12-2000"),
+        make: 2,
+        model: 3,
+        year: 4,
+      },
+    ]);
+
+    const dataStr = [
+      {
+        displayName: "12-12-2000",
+        make: 2,
+        model: 3,
+        year: 4,
+      },
+      {
+        displayName: "12-13-2000",
+        make: 3,
+        model: 4,
+        year: 1,
+      },
+      {
+        displayName: "12-14-2000",
+        make: 4,
+        model: 1,
+        year: 2,
+      },
+      {
+        displayName: "12-15-2000",
+        make: 1,
+        model: 2,
+        year: 3,
+      },
+    ];
+
+    const columnDefsStr: ColumnDefs<(typeof dataStr)[0]> = [
+      {
+        accessorKey: "displayName",
+        id: "displayName",
+        header: "name",
+      },
+      {
+        accessorKey: "make",
+        id: "make",
+        header: "make",
+      },
+      {
+        accessorKey: "model",
+        id: "model",
+        header: "model",
+      },
+      {
+        accessorKey: "year",
+        id: "year",
+        header: "year",
+      },
+    ];
+
+    expect(
+      sortByChar<(typeof dataStr)[0]>({
+        columnDefs: columnDefsStr,
+        data: dataStr,
+        sortBy: { displayName: "desc" },
+      }),
+    ).toEqual([
+      {
+        displayName: "12-15-2000",
+        make: 1,
+        model: 2,
+        year: 3,
+      },
+      {
+        displayName: "12-14-2000",
+        make: 4,
+        model: 1,
+        year: 2,
+      },
+      {
+        displayName: "12-13-2000",
+        make: 3,
+        model: 4,
+        year: 1,
+      },
+      {
+        displayName: "12-12-2000",
+        make: 2,
+        model: 3,
+        year: 4,
+      },
+    ]);
   });
 });

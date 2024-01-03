@@ -1,4 +1,3 @@
-import isNumber from "lodash.isnumber";
 import isString from "lodash.isstring";
 import type {
   TableData,
@@ -6,6 +5,7 @@ import type {
   SortBy,
   StoreHeaderDef,
   StoreColumn,
+  ColumnDefs,
 } from "./types";
 import { Signal, noSerialize } from "@builder.io/qwik";
 import isObject from "lodash.isobject";
@@ -18,7 +18,6 @@ import isObject from "lodash.isobject";
 export const normalizeSortValue = (value: string | number | undefined) => {
   if (!value) return "";
   if (isString(value)) return value.toLowerCase();
-  if (isNumber(value)) return value.toString();
 
   throw TypeError(
     "normalizeSortValue requires value to be coercive to a string.",
@@ -198,4 +197,79 @@ export const deriveColumnsFromColumnDefs = <TData extends TableData>(
     id,
     cell: cell ?? fallback,
   };
+};
+
+const isValidDate = (d: unknown) => {
+  // @ts-ignore
+  return d instanceof Date && !isNaN(d);
+};
+
+export const parseDateString = (value: unknown) => {
+  if (value instanceof Date) return value;
+
+  try {
+    if (typeof value === "string") {
+      // safari compat
+      const date = new Date(value.replaceAll("-", "/"));
+      if (isValidDate(date)) {
+        return date;
+      }
+    }
+  } catch (err) {
+    return;
+  }
+};
+
+export const isDate = (value: unknown) =>
+  value instanceof Date || !!parseDateString(value);
+
+export const sortByChar = <TData extends TableData>({
+  columnDefs,
+  sortBy,
+  data,
+}: {
+  columnDefs: ColumnDefs<TData>;
+  sortBy: SortBy;
+  data: TData[];
+}) => {
+  const [columnDefId, order] = isObject(sortBy)
+    ? Object.entries(sortBy).flat()
+    : [undefined, undefined];
+
+  if (!columnDefId) return;
+
+  const columnDef = columnDefs?.find((col) => col.id === columnDefId);
+  /**
+   *  Retrieves values using accessors and sorts columns based on said values.
+   */
+  return data.sort((a, b) => {
+    const first = getValueFromColumnDef(columnDef, a);
+
+    const second = getValueFromColumnDef(columnDef, b);
+
+    console.log(first, second);
+    if (isDate(first) && isDate(second)) {
+      if (order === "asc") {
+        return (
+          (parseDateString(first) as any) - (parseDateString(second) as any)
+        );
+      }
+      return (parseDateString(second) as any) - (parseDateString(first) as any);
+    } else if (typeof first === "number" && typeof second === "number") {
+      if (order === "asc") {
+        return first - second;
+      }
+      return second - first;
+    } else {
+      const aValue = normalizeSortValue(first);
+
+      const bValue = normalizeSortValue(second);
+
+      if (order === "asc") {
+        return aValue.localeCompare(bValue);
+      }
+
+      return bValue.localeCompare(aValue);
+    }
+  });
 };

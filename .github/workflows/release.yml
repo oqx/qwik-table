@@ -17,6 +17,7 @@ name: release
 env:
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_CONFIG_PROVENANCE: true
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
   build_and_test:
@@ -60,8 +61,8 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@oqx"
 
-      - run: pnpm release-it --preReleaseId=rc --npm.tag=rc --github.preRelease 
+      - run: pnpm release-it --ci --preReleaseId=rc --npm.tag=rc --github.preRelease 
         if: ${{ github.event.inputs.releaseType == 'rc' }}
 
-      - run: pnpm release-it 
+      - run: pnpm release-it --ci
         if: ${{ github.event.inputs.releaseType == 'stable'}}

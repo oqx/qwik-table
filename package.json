@@ -29,6 +29,15 @@
     "qwik",
     "table"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "license": "MIT",
+  "author": "Jay Kariesch <jay.kariesch@gmail.com> (https://github.com/oqx)",
+  "bugs": {
+    "url": "https://github.com/oqx/qwik-table/issues"
+  },
   "scripts": {
     "build": "qwik build",
     "build.lib": "vite build --mode lib",
@@ -48,6 +57,7 @@
     "@builder.io/qwik": "1.3.1",
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
+    "@release-it/conventional-changelog": "^8.0.1",
     "@types/eslint": "^8.44.8",
     "@types/lodash.isnumber": "^3.0.9",
     "@types/lodash.isobject": "^3.0.9",
@@ -61,13 +71,14 @@
     "eslint-plugin-qwik": "latest",
     "husky": "^8.0.3",
     "jsdom": "^23.0.1",
+    "lint-staged": "^15.2.0",
     "lodash.isnumber": "^3.0.3",
     "lodash.isobject": "^3.0.2",
     "lodash.isstring": "^4.0.1",
-    "lint-staged": "^15.2.0",
     "np": "^8.0.4",
     "oxlint": "^0.0.22",
     "prettier": "^3.1.0",
+    "release-it": "^17.0.1",
     "typescript": "^5.3.2",
     "undici": "^5.26.0",
     "vite": "^5.0.6",

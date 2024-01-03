@@ -4,46 +4,8 @@ import { flexRender, useTable } from "../UseTable";
 import styles from "../styles.css?inline";
 
 /**
- * For tests.
+ * Data the table is derived from
  */
-export const columnDefs = [
-  {
-    accessorKey: "firstName",
-    id: "firstName",
-    header: "First name",
-  },
-  {
-    accessorKey: "lastName",
-    id: "lastName",
-    header: "Last name",
-  },
-  {
-    accessorKey: "phone",
-    id: "phone",
-    header: "Phone",
-  },
-];
-
-export const getColumnDefs$ = $(
-  (): ColumnDefs<(typeof mockData)[0]> => [
-    {
-      accessorKey: "firstName",
-      id: "firstName",
-      header: "First name",
-    },
-    {
-      accessorKey: "lastName",
-      id: "lastName",
-      header: "Last name",
-    },
-    {
-      accessorKey: "phone",
-      id: "phone",
-      header: "Phone",
-    },
-  ],
-);
-
 export const mockData = [
   {
     id: "1234",
@@ -65,12 +27,35 @@ export const mockData = [
   },
 ];
 
+/**
+ * ColumnDefs to select and transform the data above into table data.
+ */
+export const getColumnDefs$ = $(
+  (): ColumnDefs<(typeof mockData)[0]> => [
+    {
+      accessorKey: "firstName",
+      id: "firstName",
+      header: "First name",
+    },
+    {
+      accessorKey: "lastName",
+      id: "lastName",
+      header: "Last name",
+    },
+    {
+      accessorKey: "phone",
+      id: "phone",
+      header: "Phone",
+    },
+  ],
+);
+
 export default component$(() => {
   useStyles$(styles);
 
   const data = useSignal(mockData);
 
-  const table = useTable({ data, getColumnDefs$ });
+  const table = useTable({ data, getColumnDefs$, fallback: "--" });
 
   return (
     <div>

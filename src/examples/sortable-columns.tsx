@@ -43,30 +43,30 @@ export default component$(() => {
   );
 });
 
-const SortHeader = ({
-  isSortedBy,
-  sortOrder,
-  heading,
-  id,
-}: {
-  isSortedBy: boolean;
-  sortOrder?: "asc" | "desc";
-  heading: string;
-  id?: string;
-}) => (
-  /* Adding data-usetable-sort to an element will automatically
+const header =
+  (value: string) =>
+  ({
+    isSortedBy,
+    sortOrder,
+    id,
+  }: {
+    isSortedBy: boolean;
+    sortOrder?: "asc" | "desc";
+    id?: string;
+  }) => (
+    /* Adding data-usetable-sort to an element will automatically
     add onClick sort functionality. */
-  <span role="button" data-usetable-sort={id} class="th">
-    {heading}{" "}
-    <span
-      class={{
-        chevron: true,
-        "chevron--down": isSortedBy && sortOrder === "desc",
-        "chevron--up": isSortedBy && sortOrder === "asc",
-      }}
-    />
-  </span>
-);
+    <span role="button" data-usetable-sort={id} class="th">
+      {value}{" "}
+      <span
+        class={{
+          chevron: true,
+          "chevron--down": isSortedBy && sortOrder === "desc",
+          "chevron--up": isSortedBy && sortOrder === "asc",
+        }}
+      />
+    </span>
+  );
 
 const isColorValueType = (props: unknown): props is { value: string } =>
   isObject(props) && "value" in props && typeof props.value === "string";
@@ -76,29 +76,29 @@ export const getColumnDefs$ = $(
     {
       accessorKey: "displayName",
       id: "displayName",
-      header: (props) => SortHeader({ ...props, heading: "Name" }),
+      header: header("Name"),
     },
     {
       accessorKey: "make",
       id: "make",
-      header: (props) => SortHeader({ ...props, heading: "Make" }),
+      header: header("Make"),
     },
     {
       accessorKey: "model",
       id: "model",
-      header: (props) => SortHeader({ ...props, heading: "Model" }),
+      header: header("Model"),
     },
     {
       accessorKey: "year",
       id: "year",
-      header: (props) => SortHeader({ ...props, heading: "Year" }),
+      header: header("Year"),
     },
     {
       accessorKey: "color",
       id: "color",
       cell: (info) => {
         if (isColorValueType(info)) {
-          return <div data-custom-cell={true}>{info.value}</div>;
+          return <div data-custom-cell={true}>{info.value} 🐣</div>;
         }
         return "--";
       },

@@ -1,43 +1,43 @@
 on:
-    pull_request:
-      paths: 
-        - "src/**"
-        - ".github/workflows/analyze.yml"
-        - "pnpm-lock.yaml"
-      branches:
-        - main
+  pull_request:
+    paths:
+      - "src/**"
+      - ".github/workflows/analyze.yml"
+      - "pnpm-lock.yaml"
+    branches:
+      - main
 
 name: PR Analysis
 
 jobs:
-    build_and_test:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-              node-version: [20.x]
-              
-        steps:
-            - uses: actions/checkout@v4
+  build_and_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
 
-            - uses: pnpm/action-setup@v2
-              with:
-                version: 8
-                run_install: false
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
-              with:
-                node-version: ${{ matrix.node-version }}
-                cache: "pnpm"
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
 
-            - name: Install dependencies
-              run: pnpm install
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
 
-            - name: Lint
-              run: pnpm lint
+      - name: Install dependencies
+        run: pnpm install
 
-            - name: Test
-              run: pnpm test
+      - name: Lint
+        run: pnpm lint
 
-            - name: Build
-              run: pnpm build
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build

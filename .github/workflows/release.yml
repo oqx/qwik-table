@@ -1,56 +1,56 @@
 on:
-    push:
-      paths:
-        - "src/**"
-        - ".github/workflows/release.yml"
-        - "pnpm-lock.yaml"
-      branches:
-        - main
-  
+  push:
+    paths:
+      - "src/**"
+      - ".github/workflows/release.yml"
+      - "pnpm-lock.yaml"
+    branches:
+      - main
+
 permissions:
-    contents: write
-    pull-requests: write
+  contents: write
+  pull-requests: write
 
 name: build
 
 jobs:
-    build_and_test:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-              node-version: [20.x]
-        steps:
-            - uses: actions/checkout@v4
+  build_and_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - uses: actions/checkout@v4
 
-            - uses: pnpm/action-setup@v2
-              with:
-                version: 8
-                run_install: false
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
 
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
-              with:
-                node-version: ${{ matrix.node-version }}
-                cache: "pnpm"
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
 
-            - name: Install dependencies
-              run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-            - name: Lint
-              run: pnpm lint
+      - name: Lint
+        run: pnpm lint
 
-            - name: Coverage
-              run: pnpm coverage
+      - name: Coverage
+        run: pnpm coverage
 
-            - name: Build
-              run: pnpm build
+      - name: Build
+        run: pnpm build
 
-            - name: Upload coverage reports to Codecov
-              uses: codecov/codecov-action@v3
-              env:
-                CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-            - uses: google-github-actions/release-please-action@v4
-              with:
-                    token: ${{ secrets.RELEASE_PLEASE_PAT }}
-                    release-type: node
+      - uses: google-github-actions/release-please-action@v4
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_PAT }}
+          release-type: node

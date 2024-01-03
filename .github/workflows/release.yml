@@ -1,17 +1,22 @@
 on:
-  push:
-    paths:
-      - "src/**"
-      - ".github/workflows/release.yml"
-      - "pnpm-lock.yaml"
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        type: choice
+        description: "What type of releease?"
+        default: stable
+        options: 
+          - rc
+          - stable
 
 permissions:
-  contents: write
-  pull-requests: write
+  id-token: write
 
 name: build
+
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  NPM_CONFIG_PROVENANCE: true
 
 jobs:
   build_and_test:
@@ -45,12 +50,14 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - uses: google-github-actions/release-please-action@v4
+      - uses: actions/setup-node@v3
         with:
-          token: ${{ secrets.RELEASE_PLEASE_PAT }}
-          release-type: node
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@oqx"
+
+      - run: pnpm release-it --preReleaseId=rc --npm.tag=rc --github.preRelease 
+        if: ${{ github.event.inputs.releaseType == 'rc' }}
+
+      - run: pnpm release-it 
+        if: ${{ github.event.inputs.releaseType == 'stable'}}

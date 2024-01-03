@@ -1,7 +1,25 @@
 import { createDOM } from "@builder.io/qwik/testing";
 import { test, expect } from "vitest";
 import SimpleTable from "../examples/simple-table";
-import { mockData, columnDefs } from "../examples/simple-table";
+import { mockData } from "../examples/simple-table";
+
+export const columnDefs = [
+  {
+    accessorKey: "firstName",
+    id: "firstName",
+    header: "First name",
+  },
+  {
+    accessorKey: "lastName",
+    id: "lastName",
+    header: "Last name",
+  },
+  {
+    accessorKey: "phone",
+    id: "phone",
+    header: "Phone",
+  },
+];
 
 test(`[SimpleTable Component]: Should contain table head cells in correct order`, async () => {
   const { screen, render } = await createDOM();

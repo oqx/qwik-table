@@ -11,18 +11,28 @@ import { Signal, noSerialize } from "@builder.io/qwik";
 import isObject from "lodash.isobject";
 
 /**
- * Converts values to a string or lowercases strings.
+ * Converts value to a string or lowercases strings.
  *
  * @param value
  */
-export const normalizeSortValue = (value: string | number | undefined) => {
+export const normalizeStringValue = (value: string | undefined) => {
   if (!value) return "";
   if (isString(value)) return value.toLowerCase();
 
   throw TypeError(
-    "normalizeSortValue requires value to be coercive to a string.",
+    "normalizeStringValue requires value to be coercive to a string.",
   );
 };
+
+/**
+ * Converts values to a string or lowercases strings.
+ *
+ * @param value
+ */
+export const normalizeStringValues = (
+  a: string | undefined,
+  b: string | undefined,
+) => [normalizeStringValue(a), normalizeStringValue(b)];
 
 /**
  * @summary Creates a {@link SortBy} object, which determines which
@@ -95,6 +105,13 @@ export const applySortListeners = (sortedBy: Signal<SortBy | undefined>) => {
   };
 };
 
+/**
+ * @summary Creates header value by either executing a JSXNode and
+ * passing in the HeaderArgs type, or attaching a string.
+ * @param col
+ *
+ * @param state
+ */
 export const deriveHeaders = <TData extends TableData>(
   columns: ColumnDef<TData>[],
   sortedBy: SortBy,
@@ -162,6 +179,13 @@ export const getValueFromColumnDef = <TData extends TableData>(
   );
 };
 
+/**
+ * @summary Creates cell value by either executing a JSXNode and
+ * passing in the value property, or attaching a string.
+ * @param col
+ *
+ * @param state
+ */
 export const getCellValue = <TData extends TableData>(
   col: ColumnDef<TData>,
   state: TData,
@@ -177,9 +201,25 @@ export const getCellValue = <TData extends TableData>(
   return value;
 };
 
+/**
+ * @summary Simple function for creating an ID on the fly.
+ *
+ * @param str
+ */
 const createIdFromString = (str: string | undefined) =>
   str ? str.replace(/\W/g, "_").toLowerCase() : undefined;
 
+/**
+ * @summary Creates cell value by either executing a JSXNode and
+ * passing in the value property, or attaching a string.
+ * @param col
+ *
+ * @param state
+ *
+ * @param prefixId
+ *
+ * @param fallback
+ */
 export const deriveColumnsFromColumnDefs = <TData extends TableData>(
   col: ColumnDef<TData>,
   state: TData,
@@ -199,20 +239,38 @@ export const deriveColumnsFromColumnDefs = <TData extends TableData>(
   };
 };
 
+/**
+ * @summary Checks if date constructor returned a valid
+ * date, rather than 'Invalid Date'.
+ *
+ * @param d
+ */
 const isValidDate = (d: unknown) => {
   // @ts-ignore
   return d instanceof Date && !isNaN(d);
 };
 
+/**
+ * @summary Checks if date is a date object or a date string.
+ * If it's a mm-dd-yyyy string, it replaces hyphens with forward
+ * slashes to make it compatible with safari.
+ *
+ * @param value
+ */
 export const parseDateString = (value: unknown) => {
   if (value instanceof Date) return value;
 
   try {
     if (typeof value === "string") {
-      // safari compat
-      const date = new Date(value.replaceAll("-", "/"));
-      if (isValidDate(date)) {
-        return date;
+      let date = value;
+
+      if (/\d{1,2}-\d{1,2}-\d{2,4}/.test(date)) {
+        date = value.replaceAll("-", "/");
+      }
+      const dateObj = new Date(date);
+
+      if (isValidDate(dateObj)) {
+        return dateObj;
       }
     }
   } catch (err) {
@@ -220,10 +278,170 @@ export const parseDateString = (value: unknown) => {
   }
 };
 
-export const isDate = (value: unknown) =>
+export const isDate = (value: unknown): boolean =>
   value instanceof Date || !!parseDateString(value);
 
-export const sortByChar = <TData extends TableData>({
+const isNumber = (value: unknown): boolean =>
+  typeof value === "number" ||
+  (typeof value === "string" && !Number.isNaN(+value));
+
+/**
+ * @summary Retrieves number values from the arguments
+ *
+ * @param a
+ *
+ * @param b
+ */
+const normalizeNumberValues = (a: number | string, b: number | string) => [
+  +a,
+  +b,
+];
+
+/**
+ * @summary Retrieves date objects from the arguments.
+ *
+ * @param a
+ *
+ * @param b
+ */
+export const normalizeDateValues = (a: unknown, b: unknown) => [
+  parseDateString(a),
+  parseDateString(b),
+];
+
+/**
+ * @summary Determines what the types are of the two items
+ * being compared.
+ *
+ * @param a
+ *
+ * @param b
+ */
+const getSortType = (a: unknown, b: unknown) => {
+  if (isDate(a) && isDate(b)) {
+    return "date";
+  } else if (isNumber(a) && isNumber(b)) {
+    return "number";
+  }
+  return "string";
+};
+
+/**
+ * @summary Handles the edge case where one or more values are
+ * undefined.
+ *
+ * @param a First sort value.
+ *
+ * @param b Second sort value.
+ *
+ * @param order 'asc' | 'desc'
+ */
+const deriveOrderFromUndefined = (a: unknown, b: unknown, order: string) => {
+  if (order === "asc" && a && !b) {
+    return 1;
+  }
+
+  if (order === "asc" && !a && b) {
+    return -1;
+  }
+
+  if (order === "desc" && a && !b) {
+    return -1;
+  }
+
+  if (order === "desc" && !a && b) {
+    return 1;
+  }
+};
+
+/**
+ * @summary Compares dates, returning a sort value for the
+ * Array.sort callback.
+ *
+ * @param a First sort value.
+ *
+ * @param b Second sort value.
+ *
+ * @param order 'asc' | 'desc'
+ */
+export const sortByDates = (a: Date, b: Date, order: string) => {
+  const [_a, _b] = normalizeDateValues(a, b);
+
+  const undefinedOrder = deriveOrderFromUndefined(_a, _b, order);
+
+  if (undefinedOrder) return undefinedOrder;
+
+  if (order === "asc") {
+    return _a!.getTime() - _b!.getTime();
+  }
+  return _b!.getTime() - _a!.getTime();
+};
+
+/**
+ * @summary Compares numbers, returning a sort value for the
+ * Array.sort callback.
+ *
+ * @param a First sort value.
+ *
+ * @param b Second sort value.
+ *
+ * @param order 'asc' | 'desc'
+ */
+export const sortByNumbers = (
+  a: string | number,
+  b: string | number,
+  order: string,
+) => {
+  const [_a, _b] = normalizeNumberValues(a, b);
+
+  const undefinedOrder = deriveOrderFromUndefined(_a, _b, order);
+
+  if (undefinedOrder) return undefinedOrder;
+
+  if (order === "asc") {
+    return _a - _b;
+  }
+  return _b - _a;
+};
+
+/**
+ * @summary Compares strings, returning a sort value for the
+ * Array.sort callback.
+ *
+ * @param a First sort value.
+ *
+ * @param b Second sort value.
+ *
+ * @param order 'asc' | 'desc'
+ */
+export const sortByStrings = (
+  a: string | undefined,
+  b: string | undefined,
+  order: string,
+) => {
+  const [_a, _b] = normalizeStringValues(a, b);
+
+  const undefinedOrder = deriveOrderFromUndefined(_a, _b, order);
+
+  if (undefinedOrder) return undefinedOrder;
+
+  if (order === "asc") {
+    return _a.localeCompare(_b);
+  }
+
+  return _b.localeCompare(_a);
+};
+
+const SORT_MAP = {
+  string: sortByStrings,
+  date: sortByDates,
+  number: sortByNumbers,
+};
+
+/**
+ * @summary Sorts columns by string, date, and number.
+ */
+export const sortByValue = <TData extends TableData>({
   columnDefs,
   sortBy,
   data,
@@ -234,7 +452,7 @@ export const sortByChar = <TData extends TableData>({
 }) => {
   const [columnDefId, order] = isObject(sortBy)
     ? Object.entries(sortBy).flat()
-    : [undefined, undefined];
+    : [undefined, "asc"];
 
   if (!columnDefId) return;
 
@@ -247,29 +465,8 @@ export const sortByChar = <TData extends TableData>({
 
     const second = getValueFromColumnDef(columnDef, b);
 
-    console.log(first, second);
-    if (isDate(first) && isDate(second)) {
-      if (order === "asc") {
-        return (
-          (parseDateString(first) as any) - (parseDateString(second) as any)
-        );
-      }
-      return (parseDateString(second) as any) - (parseDateString(first) as any);
-    } else if (typeof first === "number" && typeof second === "number") {
-      if (order === "asc") {
-        return first - second;
-      }
-      return second - first;
-    } else {
-      const aValue = normalizeSortValue(first);
+    const sortType = getSortType(first, second);
 
-      const bValue = normalizeSortValue(second);
-
-      if (order === "asc") {
-        return aValue.localeCompare(bValue);
-      }
-
-      return bValue.localeCompare(aValue);
-    }
+    return SORT_MAP[sortType](first as any, second as any, order);
   });
 };

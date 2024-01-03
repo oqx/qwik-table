@@ -5,7 +5,7 @@ on:
         type: choice
         description: "What type of releease?"
         default: stable
-        options: 
+        options:
           - rc
           - stable
 
@@ -52,8 +52,8 @@ jobs:
         run: pnpm build
 
       - run: |
-         git config --global user.email "${{ secrets.GH_EMAIL }}"
-         git config --global user.name "${{ secrets.GH_NAME }}"
+          git config --global user.email "${{ secrets.GH_EMAIL }}"
+          git config --global user.name "${{ secrets.GH_NAME }}"
 
       - uses: actions/setup-node@v3
         with:

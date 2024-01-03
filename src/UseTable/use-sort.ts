@@ -1,6 +1,6 @@
 import { type QRL, useTask$, type Signal } from "@builder.io/qwik";
 import { SortBy, type ColumnDefs, type TableData } from "./types";
-import { sortByChar } from "./utils";
+import { sortByValue } from "./utils";
 
 /**
  * @summary Sorts table columns based on state.sortedBy key/value pair.
@@ -33,7 +33,7 @@ export const useSort = <TData extends TableData>({
 
     if (!sortBy.value) return;
 
-    const newState = sortByChar({
+    const newState = sortByValue({
       columnDefs,
       sortBy: sortBy.value,
       data: data.value,

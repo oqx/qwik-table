@@ -1,13 +1,13 @@
 import { it, expect, describe } from "vitest";
 import { createDOM } from "@builder.io/qwik/testing";
 import {
-  normalizeSortValue,
+  normalizeStringValue,
   sortHelper,
   deriveHeaders,
   getValueFromColumnDef,
   getCellValue,
   deriveColumnsFromColumnDefs,
-  sortByChar,
+  sortByValue,
   isDate,
   parseDateString,
 } from "../UseTable/utils";
@@ -15,31 +15,31 @@ import { component$ } from "@builder.io/qwik";
 import { flexRender } from "../UseTable/flex-render";
 import { ColumnDef, ColumnDefs } from "../UseTable/types";
 
-describe("normalizeSortValue test", () => {
+describe("normalizeStringValue test", () => {
   it("should return a string when a string is passed in", () => {
-    expect(normalizeSortValue("hello")).toBe("hello");
+    expect(normalizeStringValue("hello")).toBe("hello");
   });
 
   it("should return a lowercase string", () => {
-    expect(normalizeSortValue("HELLO")).toBe("hello");
+    expect(normalizeStringValue("HELLO")).toBe("hello");
   });
 
   it("should return an empty string when a falsey value is passed in", () => {
-    expect(normalizeSortValue(undefined)).toBe("");
+    expect(normalizeStringValue(undefined)).toBe("");
     // @ts-ignore
-    expect(normalizeSortValue(null)).toBe("");
+    expect(normalizeStringValue(null)).toBe("");
     // @ts-ignore
-    expect(normalizeSortValue(false)).toBe("");
+    expect(normalizeStringValue(false)).toBe("");
   });
 
   it("should throw an error if argument is not falsey, string, or number", () => {
     // @ts-ignore
-    expect(() => normalizeSortValue([])).toThrowError(
-      "normalizeSortValue requires value to be coercive to a string.",
+    expect(() => normalizeStringValue([])).toThrowError(
+      "normalizeStringValue requires value to be coercive to a string.",
     );
     // @ts-ignore
-    expect(() => normalizeSortValue({})).toThrowError(
-      "normalizeSortValue requires value to be coercive to a string.",
+    expect(() => normalizeStringValue({})).toThrowError(
+      "normalizeStringValue requires value to be coercive to a string.",
     );
   });
 });
@@ -362,7 +362,7 @@ describe("parseDateString test", () => {
   });
 });
 
-describe("sortByChar test", () => {
+describe("sortByValue test", () => {
   it("should sort strings by asc", () => {
     const columnDefs: ColumnDefs<(typeof defaultData)[0]> = [
       {
@@ -388,7 +388,7 @@ describe("sortByChar test", () => {
     ];
 
     expect(
-      sortByChar<(typeof defaultData)[0]>({
+      sortByValue<(typeof defaultData)[0]>({
         columnDefs,
         data: defaultData,
         sortBy: { displayName: "asc" },
@@ -396,7 +396,7 @@ describe("sortByChar test", () => {
     ).toEqual(defaultData);
 
     expect(
-      sortByChar<(typeof defaultData)[0]>({
+      sortByValue<(typeof defaultData)[0]>({
         columnDefs,
         data: defaultData,
         sortBy: { make: "asc" },
@@ -451,7 +451,7 @@ describe("sortByChar test", () => {
     ];
 
     expect(
-      sortByChar<(typeof defaultData)[0]>({
+      sortByValue<(typeof defaultData)[0]>({
         columnDefs,
         data: defaultData,
         sortBy: { displayName: "desc" },
@@ -533,7 +533,7 @@ describe("sortByChar test", () => {
     ];
 
     expect(
-      sortByChar<(typeof data)[0]>({
+      sortByValue<(typeof data)[0]>({
         columnDefs,
         data,
         sortBy: { make: "asc" },
@@ -566,7 +566,7 @@ describe("sortByChar test", () => {
     ]);
 
     expect(
-      sortByChar<(typeof data)[0]>({
+      sortByValue<(typeof data)[0]>({
         columnDefs,
         data,
         sortBy: { displayName: "desc" },
@@ -651,7 +651,7 @@ describe("sortByChar test", () => {
     ];
 
     expect(
-      sortByChar<(typeof data)[0]>({
+      sortByValue<(typeof data)[0]>({
         columnDefs,
         data,
         sortBy: { displayName: "desc" },
@@ -734,7 +734,7 @@ describe("sortByChar test", () => {
     ];
 
     expect(
-      sortByChar<(typeof dataStr)[0]>({
+      sortByValue<(typeof dataStr)[0]>({
         columnDefs: columnDefsStr,
         data: dataStr,
         sortBy: { displayName: "desc" },

@@ -62,7 +62,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@oqx"
 
-      - run: pnpm release-it --ci --preRelease=beta
+      - run: pnpm release-it --ci --preRelease=rc
         if: ${{ github.event.inputs.releaseType == 'rc' }}
 
       - run: pnpm release-it --ci

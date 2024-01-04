@@ -12,7 +12,8 @@ on:
 
 permissions:
   id-token: write
-
+  contents: write
+  
 name: release
 
 env:
@@ -28,6 +29,8 @@ jobs:
         node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
 
       - uses: pnpm/action-setup@v2
         with:
@@ -62,11 +65,14 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@oqx"
 
-      - run: pnpm release-it --ci --preRelease=rc
+      - name: Release candidate
+        run: pnpm release-it --ci --preRelease=rc
         if: ${{ github.event.inputs.releaseType == 'rc' }}
 
-      - run: pnpm release-it --ci
+      - name: Stable release
+        run: pnpm release-it --ci
         if: ${{ github.event.inputs.releaseType == 'stable'}}
 
-      - run: pnpm release-it --ci patch
+      - name: Graduate release
+        run: pnpm release-it --ci patch
         if: ${{ github.event.inputs.releaseType == 'graduate'}}

@@ -1,6 +1,14 @@
 import type { NoSerialize, JSXChildren, JSXNode } from "@builder.io/qwik";
 import type { Serializable } from "./types";
 
+/**
+ * @summary Creates a renderable value from JSXNode, string, or number, eliminating
+ * the need for adding ternary statements for value checks.
+ *
+ * @param arg
+ *
+ * @returns Renderable value
+ */
 export const flexRender = (
   arg:
     | string

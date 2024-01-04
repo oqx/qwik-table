@@ -62,11 +62,11 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@oqx"
 
-      - run: pnpm release-it --ci --preReleaseId=rc --npm.tag=next --github.preRelease 
+      - run: pnpm release-it --ci --preRelease=beta
         if: ${{ github.event.inputs.releaseType == 'rc' }}
 
       - run: pnpm release-it --ci
         if: ${{ github.event.inputs.releaseType == 'stable'}}
 
-      - run: pnpm release-it --ci --increment patch
+      - run: pnpm release-it --ci patch
         if: ${{ github.event.inputs.releaseType == 'graduate'}}

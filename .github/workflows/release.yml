@@ -4,10 +4,11 @@ on:
       releaseType:
         type: choice
         description: "What type of releease?"
-        default: stable
+        default: rc
         options:
           - rc
           - stable
+          - graduate
 
 permissions:
   id-token: write
@@ -61,8 +62,11 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@oqx"
 
-      - run: pnpm release-it --ci --preReleaseId=rc --npm.tag=rc --github.preRelease 
+      - run: pnpm release-it --ci --preReleaseId=rc --npm.tag=next --github.preRelease 
         if: ${{ github.event.inputs.releaseType == 'rc' }}
 
       - run: pnpm release-it --ci
         if: ${{ github.event.inputs.releaseType == 'stable'}}
+
+      - run: pnpm release-it --ci --increment patch
+        if: ${{ github.event.inputs.releaseType == 'graduate'}}
